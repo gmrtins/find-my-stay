@@ -1,4 +1,14 @@
 {
-    "tab_homepage": "Página Inicial",
-    "tab_settings": "Definições"
+    "tab_homepage": "Página inicial",
+    "tab_settings": "Definições",
+    "tab_favorites": "Favoritos",
+    "per_night_tag": "por noite",
+    "homepage_title": "Encontra o hotel perfeito",
+    "hotel_details_hotel_label": "Hotel",
+    "hotel_details_users_reviews_label": "Das avaliações dos utilizadores",
+    "rating_message_poor": "Mau",
+    "rating_message_passable": "Aceitável",
+    "rating_message_good": "Bom",
+    "rating_message_very_good": "Muito bom",
+    "rating_message_excellent": "Excelente"
 }
