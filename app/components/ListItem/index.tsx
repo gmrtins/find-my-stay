@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTranslation } from "react-i18next";
+import { router } from "expo-router";
+import { getCurrencySymbol } from "@/app/utils";
 
 interface IListItemProps {
     item: IHotel;
@@ -21,9 +23,14 @@ export default function ListItem(props: IListItemProps) {
         }
         return stars;
     }
-
     return (
-        <TouchableOpacity style={styles.container} onPress={() => alert(item.name)}>
+        <TouchableOpacity style={styles.container} onPress={() => router.push({
+            pathname: "/screens/HotelDetails",
+            params: { data: JSON.stringify(item) }
+        })}>
+
+
+
             <View style={{ flexDirection: "row", gap: 10 }}>
                 <Image source={{ uri: img }} onError={() => setImg("https://via.placeholder.com/75")}
                     style={styles.image} />
@@ -38,7 +45,7 @@ export default function ListItem(props: IListItemProps) {
                     </View> */}
 
                     <View style={[styles.rowContainer, { alignItems: 'flex-end' }]}>
-                        <Text style={[styles.body, { fontSize: 18, fontWeight: 'bold', color: "#1A94FF" }]}>{item.price + ' ' + item.currency}</Text>
+                        <Text style={[styles.body, { fontSize: 18, fontWeight: 'bold', color: "#1A94FF" }]}>{item.price + ' ' + getCurrencySymbol(item.currency)}</Text>
                         <Text style={[styles.body, { fontSize: 10, fontWeight: 'light', marginBottom: 2 }]}>{t('per_night_tag')}</Text>
                     </View>
 
@@ -55,7 +62,7 @@ export default function ListItem(props: IListItemProps) {
                 </View>
 
             </View>
-        </TouchableOpacity>
+        </TouchableOpacity >
     );
 }
 

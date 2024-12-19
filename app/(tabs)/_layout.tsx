@@ -12,8 +12,9 @@ export default function TabLayout() {
                 options={{
                     title: t("tab_homepage"),
                     tabBarIcon: ({ color }) => (
-                        <FontAwesome size={20} name="home" color={color} />
+                        <FontAwesome size={20} name="hotel" color={color} />
                     ),
+                    headerShown: false,
                 }}
             />
             <Tabs.Screen
@@ -23,6 +24,7 @@ export default function TabLayout() {
                     tabBarIcon: ({ color }) => (
                         <FontAwesome size={20} name="bookmark-o" color={color} />
                     ),
+                    headerShown: false,
                 }}
             />
             <Tabs.Screen
@@ -32,6 +34,7 @@ export default function TabLayout() {
                     tabBarIcon: ({ color }) => (
                         <FontAwesome size={20} name="gear" color={color} />
                     ),
+                    headerShown: false,
                 }}
             />
         </Tabs>

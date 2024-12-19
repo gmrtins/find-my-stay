@@ -1,15 +1,23 @@
-import { View, Text, StyleSheet, Button, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Button, FlatList, ActivityIndicator, TouchableOpacity, TextInput } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { fetchData } from '../api/service';
 import { IHotel } from '../types';
 import ListItem from '../components/ListItem';
+import { login } from '../configs/firebaseConfig';
+import BottomSheet, { BottomSheetFlatList, BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Filters, { IFilters } from '../components/Filters';
+import { getRatingMessage } from '../utils';
 
 export default function Homepage() {
+    const sheetRef = useRef<BottomSheet>(null);
+
     const [data, setData] = useState<IHotel[]>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const [search, setSearch] = useState('');
+    const [filteredData, setFilteredData] = useState<IHotel[]>();
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -25,7 +33,41 @@ export default function Homepage() {
         };
 
         getData();
+        login();
     }, []);
+
+    useEffect(() => {
+        setFilteredData(data?.filter((item) => item.name.includes(search)));
+    }, [search]);
+
+    const handleSheetChanges = useCallback((index: number) => {
+        console.log('handleSheetChanges', index);
+    }, []);
+
+
+    const getMaxPrice = useMemo(() => {
+        return data?.reduce((max, p) => p.price > max ? p.price : max, data[0].price);
+    }, [data]);
+
+
+
+
+    const applyFilters = (f: IFilters) => {
+        let newData = data.filter(hotel => {
+            const matchesStars = f.stars.length === 0 || f.stars.includes(hotel.stars);
+            const matchesPrice = (!f.min_price || hotel.price >= f.min_price) && (!f.max_price || hotel.price <= f.max_price);
+            const matchesRating = f.rating.length === 0 || f.rating.includes(getRatingMessage(hotel.userRating));
+
+            return matchesStars && matchesPrice;
+            //&& matchesRating;
+        });
+
+        setFilteredData(newData.filter((item) => item !== null));
+
+
+        // setFilteredData(data?.filter((item) => item.name.includes(search)));
+    };
+
 
     const renderItem = ({ item }: { item: IHotel }) => (
         <ListItem item={item} />
@@ -47,28 +89,43 @@ export default function Homepage() {
         );
     }
 
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.header}>Fetched Data</Text>
+        <GestureHandlerRootView style={styles.container}>
+            <Text style={styles.header}>{t('homepage_title')}</Text>
+            <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1 }} onChangeText={text => setSearch(text)} />
+            <Button onPress={() => sheetRef.current?.expand()} title='Filter' />
             <FlatList
-                data={data}
+                data={filteredData || data}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}
             />
-        </View>
+
+            <BottomSheet
+                ref={sheetRef}
+                onChange={handleSheetChanges}
+                enablePanDownToClose
+            >
+                <BottomSheetView style={styles.bottomSheetContainer}>
+                    <Filters onApplyFilters={(f) => { applyFilters(f); sheetRef.current?.close() }} maxPrice={getMaxPrice} />
+                </BottomSheetView>
+            </BottomSheet>
+        </GestureHandlerRootView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
+        paddingHorizontal: 16,
         backgroundColor: "#fafafa",
     },
     header: {
-        fontSize: 20,
+        fontSize: 28,
         fontWeight: "bold",
-        marginBottom: 10,
+        marginVertical: 24,
+        width: 200,
+        color: "#333",
     },
     item: {
         padding: 10,
@@ -99,4 +156,9 @@ const styles = StyleSheet.create({
         color: "red",
         fontSize: 16,
     },
+    bottomSheetContainer: {
+        backgroundColor: "white",
+        paddingBottom: 16,
+    },
+
 });
