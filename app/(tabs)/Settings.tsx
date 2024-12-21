@@ -12,6 +12,7 @@ import i18n, { changeAppLanguage } from "../i18n";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTranslation } from "react-i18next";
+import colors from "../theme/colors";
 
 const PlaceholderImageUri =
     "https://blocks.astratic.com/img/general-img-portrait.png";
@@ -41,7 +42,7 @@ export default function Settings() {
         <SafeAreaView style={styles.container}>
             <View style={styles.diagonalBackground}>
                 <LinearGradient
-                    colors={["#0974d3", "#1A94FF"]}
+                    colors={["#0974d3", colors.BLUE]}
                     style={styles.gradient}
                 />
             </View>
@@ -108,7 +109,7 @@ export default function Settings() {
                             >
                                 <Text style={styles.menuText}>🇵🇹 Português</Text>
                                 {selectedLanguage === "pt-PT" && (
-                                    <FontAwesome size={16} name="check" color={"#1A94FF"} />
+                                    <FontAwesome size={16} name="check" color={colors.BLUE} />
                                 )}
                             </TouchableOpacity>
                             <View style={styles.divider}></View>
@@ -118,7 +119,7 @@ export default function Settings() {
                             >
                                 <Text style={styles.menuText}>🇬🇧 English</Text>
                                 {selectedLanguage === "en-GB" && (
-                                    <FontAwesome size={16} name="check" color={"#1A94FF"} />
+                                    <FontAwesome size={16} name="check" color={colors.BLUE} />
                                 )}
                             </TouchableOpacity>
                             <View style={styles.divider}></View>
@@ -128,7 +129,7 @@ export default function Settings() {
                             >
                                 <Text style={styles.menuText}>🇪🇸 Español</Text>
                                 {selectedLanguage === "es-ES" && (
-                                    <FontAwesome size={16} name="check" color={"#1A94FF"} />
+                                    <FontAwesome size={16} name="check" color={colors.BLUE} />
                                 )}
                             </TouchableOpacity>
                         </View>
@@ -138,7 +139,7 @@ export default function Settings() {
                                 applyLanguage();
                             }}
                         >
-                            <Text style={styles.saveButtonText}>{t("save")}</Text>
+                            <Text style={styles.saveButtonText}>{t("save_btn")}</Text>
                         </TouchableOpacity>
                     </View>
                 )}
@@ -161,8 +162,8 @@ export default function Settings() {
                                 style={styles.menuItem}
                                 onPress={() => setSelectedScreen("language")}
                             >
-                                <FontAwesome size={16} name="globe" color={"#1A94FF"} />
-                                <Text style={styles.menuText}>{t("language")}</Text>
+                                <FontAwesome size={16} name="globe" color={colors.BLUE} />
+                                <Text style={styles.menuText}>{t("settings_screen_language_btn")}</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -182,8 +183,8 @@ export default function Settings() {
                                 style={styles.menuItem}
                                 onPress={() => logout()}
                             >
-                                <FontAwesome size={16} name="plane" color={"#1A94FF"} />
-                                <Text style={styles.menuText}>{t("logout")}</Text>
+                                <FontAwesome size={16} name="plane" color={colors.BLUE} />
+                                <Text style={styles.menuText}>{t("settings_screen_logout_btn")}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

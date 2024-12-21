@@ -21,5 +21,10 @@
     "hotel_details_checkout_label": "Check-out",
     "hotel_details_title": "Hotel details",
     "hotels_list_title": "Hotels list",
-    "favorites_title": "Favorites"
+    "favorites_title": "Favorites",
+    "settings_screen_language_btn": "Language",
+    "settings_screen_logout_btn": "Logout",
+    "settings": "Settings",
+    "language": "Language",
+    "save_btn": "Save"
 }
