@@ -7,18 +7,19 @@
     "hotel_details_hotel_label": "Hotel",
     "hotel_details_users_reviews_label": "From users reviews",
     "rating_message_poor": "Poor",
-    "rating_message_passable": "Passable",
+    "rating_message_passable": "Average",
     "rating_message_good": "Good",
     "rating_message_very_good": "Very good",
-    "rating_message_excellent": "Excellent"
+    "rating_message_excellent": "Excellent",
+    "login_screen_email_placeholder": "Email",
+    "login_screen_password_placeholder": "Password",
+    "login_screen_login_btn": "Login",
+    "login_screen_register_btn": "Register",
+    "login_screen_title": "Login",
+    "homepage_search_placeholder": "Search for hotels",
+    "hotel_details_checkin_label": "Check-in",
+    "hotel_details_checkout_label": "Check-out",
+    "hotel_details_title": "Hotel details",
+    "hotels_list_title": "Hotels list",
+    "favorites_title": "Favorites"
 }
-// 1	Terrible
-// 2	Awful
-// 3	Very Bad
-// 4	Bad
-// 5	Average
-// 6	Fair
-// 7	Good
-// 8	Very Good
-// 9	Excellent
-// 10	Perfect

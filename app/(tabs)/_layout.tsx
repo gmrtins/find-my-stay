@@ -1,12 +1,13 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import { useTranslation } from "react-i18next";
+import colors from "../theme/colors";
 
 export default function TabLayout() {
     const { t } = useTranslation();
 
     return (
-        <Tabs screenOptions={{ tabBarActiveTintColor: "#1A94FF" }}>
+        <Tabs screenOptions={{ tabBarActiveTintColor: colors.BLUE }}>
             <Tabs.Screen
                 name="index"
                 options={{
