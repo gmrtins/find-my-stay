@@ -9,11 +9,27 @@ import { auth } from "./configs/firebaseConfig";
 import { useTranslation } from "react-i18next";
 import { HotelDetailsParams } from "./types";
 import { FavoritesProvider } from "./contexts/FavoriteContext";
+import {
+  useFonts,
+  Poppins_300Light,
+  Poppins_400Regular,
+  Poppins_500Medium,
+  Poppins_600SemiBold,
+  Poppins_700Bold,
+} from "@expo-google-fonts/poppins";
 
 export default function RootLayout() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
+
+  let [fontsLoaded] = useFonts({
+    Poppins_300Light,
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+    Poppins_700Bold,
+  });
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -28,6 +44,9 @@ export default function RootLayout() {
     return () => unsubscribe();
   }, [router]);
   const insets = useSafeAreaInsets();
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
     <FavoritesProvider>
       <View style={{

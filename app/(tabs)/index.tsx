@@ -11,6 +11,7 @@ import Filters, { IFilters } from '../components/Filters';
 import { getRatingMessage } from '../utils';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import colors from '../theme/colors';
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Homepage() {
     const sheetRef = useRef<BottomSheet>(null);
@@ -96,44 +97,92 @@ export default function Homepage() {
 
     return (
         <GestureHandlerRootView style={styles.container}>
-            <Text style={styles.header}>{t('homepage_title')}</Text>
-            <View style={styles.topContainer}>
-                <TextInput style={styles.searchBar} placeholder={t('homepage_search_placeholder')} onChangeText={text => setSearch(text)} />
-                <TouchableOpacity style={styles.filtersBtn} onPress={() => isFiltersVisible ? sheetRef.current?.close() : sheetRef.current?.expand()} >
-                    <Ionicons name='filter' size={20} color="white" />
-                </TouchableOpacity>
+            <LinearGradient
+                colors={["#0974d3", "#1A94FF"]} // Customize your colors
+                style={{
+                    backgroundColor: "#1A94FF",
+                    borderBottomLeftRadius: 16,
+                    borderBottomRightRadius: 16,
+                    padding: 16,
+                }}
+            >
+                <View style={{ marginVertical: 24 }}>
+                    <Text style={styles.header}>{t("homepage_title")}</Text>
+                    <Text style={styles.subheader}>{t("homepage_subtitle")}</Text>
+                </View>
+
+                {/* SEARCH */}
+                <View style={styles.topContainer}>
+                    <TextInput
+                        style={styles.searchBar}
+                        placeholder={t("homepage_search_placeholder")}
+                        onChangeText={(text) => setSearch(text)}
+                        placeholderTextColor={"#333333"}
+                    />
+                    <TouchableOpacity
+                        style={styles.filtersBtn}
+                        onPress={() =>
+                            isFiltersVisible
+                                ? sheetRef.current?.close()
+                                : sheetRef.current?.expand()
+                        }
+                    >
+                        <Ionicons name="filter" size={20} color="#1A94FF" />
+                    </TouchableOpacity>
+                </View>
+            </LinearGradient>
+
+            {/* HOTELS LIST */}
+            <View style={{ paddingHorizontal: 6, flex: 1 }}>
+                <FlatList
+                    data={filteredData || data}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={renderItem}
+                />
             </View>
-            <FlatList
-                data={filteredData || data}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={renderItem}
-            />
+
+            {/* FILTERS */}
             <BottomSheet
                 index={-1}
                 ref={sheetRef}
                 onChange={handleSheetChanges}
                 enablePanDownToClose
+                enableDynamicSizing
             >
                 <BottomSheetView style={styles.bottomSheetContainer}>
-                    <Filters onApplyFilters={(f) => { applyFilters(f); sheetRef.current?.close() }} maxPrice={getMaxPrice} />
+                    <Filters
+                        onApplyFilters={(f) => {
+                            applyFilters(f);
+                            sheetRef.current?.close();
+                        }}
+                        maxPrice={getMaxPrice}
+                    />
                 </BottomSheetView>
             </BottomSheet>
         </GestureHandlerRootView>
     );
-};
+}
 
 const styles = StyleSheet.create({
+    // HEADER
     container: {
+        flex: 1,
+    },
+    listContainer: {
         flex: 1,
         paddingHorizontal: 16,
         backgroundColor: "#fafafa",
+        fontFamily: "Poppins_400Regular",
     },
     header: {
         fontSize: 28,
-        fontWeight: "bold",
-        marginVertical: 24,
-        width: 200,
-        color: "#333",
+        color: "white",
+        fontFamily: "Poppins_700Bold",
+    },
+    subheader: {
+        fontSize: 28,
+        color: "white",
+        fontFamily: "Poppins_700Bold",
     },
     item: {
         padding: 10,
@@ -164,31 +213,46 @@ const styles = StyleSheet.create({
         color: "red",
         fontSize: 16,
     },
+
+    // SEARCH
+    searchBar: {
+        flex: 1,
+        height: 40,
+        borderRadius: 8,
+        color: "black",
+        backgroundColor: "white",
+        paddingHorizontal: 8,
+        fontFamily: "Poppins_400Regular",
+    },
+    filtersBtn: {
+        width: 40,
+        height: 40,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white",
+        borderRadius: 8,
+    },
+
+    // BOTTOM SHEET
+    bottomSheet: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
+    },
     bottomSheetContainer: {
         backgroundColor: "white",
         paddingBottom: 16,
     },
     topContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         gap: 8,
-        marginBottom: 8
+        marginBottom: 8,
     },
-    filtersBtn: {
-        width: 40,
-        height: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: colors.BLUE,
-        borderRadius: 16
-    },
-    searchBar: {
-        flex: 1,
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        borderRadius: 16
-    },
-
 });
