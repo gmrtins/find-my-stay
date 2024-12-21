@@ -11,14 +11,13 @@ const resources = {
     'es-ES': { translation: esTranslation },
 };
 
-export const changeLanguage = async (lang: string) => {
+export const changeAppLanguage = async (lang: string) => {
     await AsyncStorage.setItem('appLanguage', lang);
     i18n.changeLanguage(lang);
 };
 
 const initI18n = async () => {
     let savedLanguage = await AsyncStorage.getItem('appLanguage');
-
     if (!savedLanguage) {
         savedLanguage = i18n.language;
     }

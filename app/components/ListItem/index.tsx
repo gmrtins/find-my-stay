@@ -5,6 +5,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTranslation } from "react-i18next";
 import { router } from "expo-router";
 import { getCurrencySymbol } from "@/app/utils";
+import colors from "@/app/theme/colors";
 
 interface IListItemProps {
     item: IHotel;
@@ -19,20 +20,21 @@ export default function ListItem(props: IListItemProps) {
     const renderStars = (rating: number) => {
         const stars = [];
         for (let i = 0; i < rating; i++) {
-            stars.push(<FontAwesome key={i} size={16} name="star" color={"#FFC400"} />);
+            stars.push(<FontAwesome key={i} size={16} name="star" color={colors.YELLOW} />);
         }
         return stars;
     }
     return (
         <TouchableOpacity style={styles.container} onPress={() => router.push({
             pathname: "/screens/HotelDetails",
-            params: { data: JSON.stringify(item) }
+            params: { data: JSON.stringify(item), name: item.name, }
+
         })}>
 
 
 
             <View style={{ flexDirection: "row", gap: 10 }}>
-                <Image source={{ uri: img }} onError={() => setImg("https://via.placeholder.com/75")}
+                <Image source={{ uri: img }} onError={() => setImg("https://blocks.astratic.com/img/general-img-portrait.png")}
                     style={styles.image} />
                 <View style={styles.details}>
                     <Text style={styles.title} numberOfLines={2}>{item.name}</Text>
@@ -45,19 +47,19 @@ export default function ListItem(props: IListItemProps) {
                     </View> */}
 
                     <View style={[styles.rowContainer, { alignItems: 'flex-end' }]}>
-                        <Text style={[styles.body, { fontSize: 18, fontWeight: 'bold', color: "#1A94FF" }]}>{item.price + ' ' + getCurrencySymbol(item.currency)}</Text>
+                        <Text style={[styles.body, { fontSize: 18, fontWeight: 'bold', color: colors.BLUE }]}>{item.price + ' ' + getCurrencySymbol(item.currency)}</Text>
                         <Text style={[styles.body, { fontSize: 10, fontWeight: 'light', marginBottom: 2 }]}>{t('per_night_tag')}</Text>
-                    </View>
+                    </View >
 
-                </View>
-            </View>
+                </View >
+            </View >
             <View style={{ flexDirection: "row", gap: 16, paddingVertical: 4, borderRadius: 4, paddingHorizontal: 8 }}>
                 <View style={{ flexDirection: "row", gap: 5, alignItems: "center" }}>
-                    <FontAwesome size={10} name="map-o" color={"#1A94FF"} />
+                    <FontAwesome size={10} name="map-o" color={colors.BLUE} />
                     <Text style={{ fontSize: 10 }}>{item.location.city}</Text>
                 </View>
                 <View style={{ flexDirection: "row", gap: 5, alignItems: "center" }}>
-                    <FontAwesome size={10} name="thumbs-o-up" color={"#1A94FF"} />
+                    <FontAwesome size={10} name="thumbs-o-up" color={colors.BLUE} />
                     <Text style={{ fontSize: 10 }}>{item.userRating}</Text>
                 </View>
 

@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import RangeSlider, { Slider } from 'react-native-range-slider-expo';
 import { useTranslation } from "react-i18next";
+import colors from "@/app/theme/colors";
 
 
 export interface IFilters {
@@ -48,7 +49,7 @@ export default function Filters(props: IFiltersProps) {
                     }
                 }}>
                     <Text>{index + 1}</Text>
-                    <FontAwesome size={16} name={filters.stars.includes(index + 1) ? "star" : "star-o"} color={"#FFC400"} />
+                    <FontAwesome size={16} name={filters.stars.includes(index + 1) ? "star" : "star-o"} color={colors.YELLOW} />
                 </TouchableOpacity >)}
             </View>
             <View style={styles.divider}></View>
@@ -82,7 +83,7 @@ export default function Filters(props: IFiltersProps) {
                     knobSize={18}
                     barHeight={3}
                     styleSize={22}
-                    inRangeBarColor="#1A94FF"
+                    inRangeBarColor={colors.BLUE}
                     fromKnobColor="blue"
                     toKnobColor="blue"
                 />
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingVertical: 16,
         paddingHorizontal: 16,
-        backgroundColor: '#1A94FF',
+        backgroundColor: colors.BLUE,
         borderRadius: 8,
         alignItems: 'center'
     },
