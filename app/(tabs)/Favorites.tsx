@@ -4,8 +4,8 @@ import { useState, useEffect, useContext } from 'react';
 import { fetchData } from '../api/service';
 import { IHotel } from '../types';
 import ListItem from '../components/ListItem';
-import { getFavorites } from '../configs/firebaseConfig';
 import { FavoritesContext } from '../contexts/FavoriteContext';
+import colors from '../theme/colors';
 
 export default function Favorites() {
     const [data, setData] = useState<IHotel[]>();
@@ -42,7 +42,7 @@ export default function Favorites() {
     if (loading) {
         return (
             <View style={styles.center}>
-                <ActivityIndicator size="large" color="#0000ff" />
+                <ActivityIndicator size="large" color={colors.BLUE} />
             </View>
         );
     }

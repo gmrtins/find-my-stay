@@ -3,7 +3,7 @@
     "tab_settings": "Configurações",
     "tab_favorites": "Favoritos",
     "per_night_tag": "por noite",
-    "homepage_title": "Encontre o hotel perfeito",
+    "homepage_title": "Encontre o seu hotel perfeito",
     "hotel_details_hotel_label": "Hotel",
     "hotel_details_users_reviews_label": "Das avaliações dos utilizadores",
     "rating_message_poor": "Fraco",
@@ -21,5 +21,10 @@
     "hotel_details_checkout_label": "Check-out",
     "hotel_details_title": "Detalhes do Hotel",
     "hotels_list_title": "Lista de Hotéis",
-    "favorites_title": "Favoritos"
+    "favorites_title": "Favoritos",
+    "settings_screen_language_btn": "Idioma",
+    "settings_screen_logout_btn": "Terminar Sessão",
+    "settings": "Configurações",
+    "language": "Idioma",
+    "save_btn": "Guardar"
 }

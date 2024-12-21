@@ -81,7 +81,7 @@ export default function Homepage() {
     if (loading) {
         return (
             <View style={styles.center}>
-                <ActivityIndicator size="large" color="#0000ff" />
+                <ActivityIndicator size="large" color={colors.BLUE} />
             </View>
         );
     }
@@ -98,9 +98,9 @@ export default function Homepage() {
     return (
         <GestureHandlerRootView style={styles.container}>
             <LinearGradient
-                colors={["#0974d3", "#1A94FF"]} // Customize your colors
+                colors={["#0974d3", colors.BLUE]} // Customize your colors
                 style={{
-                    backgroundColor: "#1A94FF",
+                    backgroundColor: colors.BLUE,
                     borderBottomLeftRadius: 16,
                     borderBottomRightRadius: 16,
                     padding: 16,
@@ -127,7 +127,7 @@ export default function Homepage() {
                                 : sheetRef.current?.expand()
                         }
                     >
-                        <Ionicons name="filter" size={20} color="#1A94FF" />
+                        <Ionicons name="filter" size={20} color={colors.BLUE} />
                     </TouchableOpacity>
                 </View>
             </LinearGradient>
