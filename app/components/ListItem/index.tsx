@@ -49,10 +49,10 @@ export default function ListItem(props: IListItemProps) {
                     <View style={[styles.rowContainer, { alignItems: 'flex-end' }]}>
                         <Text style={[styles.body, { fontSize: 18, fontWeight: 'bold', color: colors.BLUE }]}>{item.price + ' ' + getCurrencySymbol(item.currency)}</Text>
                         <Text style={[styles.body, { fontSize: 10, fontWeight: 'light', marginBottom: 2 }]}>{t('per_night_tag')}</Text>
-                    </View>
+                    </View >
 
-                </View>
-            </View>
+                </View >
+            </View >
             <View style={{ flexDirection: "row", gap: 16, paddingVertical: 4, borderRadius: 4, paddingHorizontal: 8 }}>
                 <View style={{ flexDirection: "row", gap: 5, alignItems: "center" }}>
                     <FontAwesome size={10} name="map-o" color={colors.BLUE} />
