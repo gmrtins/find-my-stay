@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, FlatList, ActivityIndicator, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Button, FlatList, ActivityIndicator, TouchableOpacity, TextInput, Touchable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { fetchData } from '../api/service';
@@ -9,6 +9,8 @@ import BottomSheet, { BottomSheetFlatList, BottomSheetScrollView, BottomSheetVie
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Filters, { IFilters } from '../components/Filters';
 import { getRatingMessage } from '../utils';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import colors from '../theme/colors';
 
 export default function Homepage() {
     const sheetRef = useRef<BottomSheet>(null);
@@ -18,6 +20,8 @@ export default function Homepage() {
     const [error, setError] = useState(null);
     const [search, setSearch] = useState('');
     const [filteredData, setFilteredData] = useState<IHotel[]>();
+    const [isFiltersVisible, setIsFiltersVisible] = useState(false);
+
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -41,7 +45,7 @@ export default function Homepage() {
     }, [search]);
 
     const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
+        setIsFiltersVisible(index > -1 ? true : false);
     }, []);
 
 
@@ -93,15 +97,19 @@ export default function Homepage() {
     return (
         <GestureHandlerRootView style={styles.container}>
             <Text style={styles.header}>{t('homepage_title')}</Text>
-            <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1 }} onChangeText={text => setSearch(text)} />
-            <Button onPress={() => sheetRef.current?.expand()} title='Filter' />
+            <View style={styles.topContainer}>
+                <TextInput style={styles.searchBar} placeholder={t('homepage_search_placeholder')} onChangeText={text => setSearch(text)} />
+                <TouchableOpacity style={styles.filtersBtn} onPress={() => isFiltersVisible ? sheetRef.current?.close() : sheetRef.current?.expand()} >
+                    <Ionicons name='filter' size={20} color="white" />
+                </TouchableOpacity>
+            </View>
             <FlatList
                 data={filteredData || data}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}
             />
-
             <BottomSheet
+                index={-1}
                 ref={sheetRef}
                 onChange={handleSheetChanges}
                 enablePanDownToClose
@@ -159,6 +167,28 @@ const styles = StyleSheet.create({
     bottomSheetContainer: {
         backgroundColor: "white",
         paddingBottom: 16,
+    },
+    topContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        gap: 8,
+        marginBottom: 8
+    },
+    filtersBtn: {
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.BLUE,
+        borderRadius: 16
+    },
+    searchBar: {
+        flex: 1,
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 16
     },
 
 });

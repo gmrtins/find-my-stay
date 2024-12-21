@@ -75,7 +75,7 @@ export const fetchData = async (): Promise<IHotel[]> => {
 
     try {
         const response = await axios.get<IHotel[]>(`${BASE_URL}`);
-        return [...response.data, ...mock.hotels];
+        return [...response.data, ...mock.hotels].sort((a, b) => a.id - b.id);
     } catch (error) {
         throw new Error(error.message);
     }

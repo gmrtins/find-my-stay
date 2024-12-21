@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet, Button, FlatList, ActivityIndicator, TouchableOpacity, TextInput } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { fetchData } from '../api/service';
 import { IHotel } from '../types';
 import ListItem from '../components/ListItem';
 import { getFavorites } from '../configs/firebaseConfig';
+import { FavoritesContext } from '../contexts/FavoriteContext';
 
 export default function Favorites() {
     const [data, setData] = useState<IHotel[]>();
@@ -13,7 +14,7 @@ export default function Favorites() {
     const [filteredData, setFilteredData] = useState<IHotel[]>();
     const [refreshing, setRefreshing] = useState(true);
     const { t } = useTranslation();
-
+    const { favorites } = useContext(FavoritesContext);
     useEffect(() => {
         const getDataFromAPI = async () => {
             try {
@@ -27,21 +28,12 @@ export default function Favorites() {
         };
 
         getDataFromAPI();
-    }, []);
+    }, [refreshing]);
 
     useEffect(() => {
-        const fetchFavorites = async () => {
-            const userFavorites: number[] = await getFavorites();
-            console.log(JSON.stringify(userFavorites))
-            setFilteredData(
-                data?.filter((item) => userFavorites?.includes(item.id))
-            );
-            setRefreshing(false);
-        };
-        if (data) {
-            fetchFavorites();
-        }
-    }, [data, refreshing]);
+        setFilteredData(data?.filter((item) => favorites?.includes(item.id)));
+        setRefreshing(false);
+    }, [data, refreshing, favorites]);
 
     const renderItem = ({ item }: { item: IHotel }) => (
         <ListItem item={item} />
