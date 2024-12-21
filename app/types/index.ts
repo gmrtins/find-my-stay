@@ -28,3 +28,8 @@ export interface IHotel {
     price: number;
     currency: string;
 }
+
+export type HotelDetailsParams = {
+    name: string;
+    data: string;
+};
