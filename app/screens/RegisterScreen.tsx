@@ -1,64 +1,132 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { LinearGradient } from "expo-linear-gradient";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { View, Text, TextInput, StyleSheet, SafeAreaView } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import colors from "../theme/colors";
+import { Button } from "../components/Button";
+import { Input } from "../components/Input";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Entypo from "@expo/vector-icons/Entypo";
 
 const RegisterScreen = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const insets = useSafeAreaInsets();
+    const { t } = useTranslation();
+
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleRegister = () => {
         // Handle registration logic here
-        console.log('Name:', name);
-        console.log('Email:', email);
-        console.log('Password:', password);
+        console.log("Name:", name);
+        console.log("Email:", email);
+        console.log("Password:", password);
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Register</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Name"
-                value={name}
-                onChangeText={setName}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
-            <Button title="Register" onPress={handleRegister} />
-        </View>
+        <SafeAreaView style={styles.container}>
+            <View style={styles.diagonalBackground}>
+                <LinearGradient
+                    colors={["#0974d3", colors.BLUE]}
+                    style={[styles.gradient, { paddingTop: insets.top + 16 }]}
+                />
+            </View>
+
+            <View style={styles.content}>
+                <Text style={styles.heading}>{t("register_title")}</Text>
+                <View style={{ gap: 16 }}>
+                    <View style={styles.inputsContainer}>
+                        <View style={styles.inputItem}>
+                            <Input
+                                placeholder={t("name")}
+                                value={name}
+                                onChange={setName}
+                                leftIcon={<Entypo name="user" size={16} color={colors.BLUE} />}
+                            />
+                        </View>
+                        <View style={styles.divider}></View>
+                        <View style={styles.inputItem}>
+                            <Input
+                                placeholder={t("email")}
+                                value={email}
+                                onChange={setEmail}
+                                leftIcon={<Entypo name="mail" size={16} color={colors.BLUE} />}
+                            />
+                        </View>
+                        <View style={styles.divider}></View>
+                        <View style={styles.inputItem}>
+                            <Input
+                                placeholder={t("password")}
+                                value={password}
+                                onChange={setPassword}
+                                secureTextEntry
+                                leftIcon={<Entypo name="lock" size={16} color={colors.BLUE} />}
+                            />
+                        </View>
+                    </View>
+                    <Button
+                        type="primary"
+                        onPress={handleRegister}
+                        text={t("Register")}
+                    />
+                </View>
+            </View>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        padding: 16,
     },
-    title: {
-        fontSize: 24,
-        marginBottom: 16,
-        textAlign: 'center',
+    diagonalBackground: {
+        position: "absolute",
+        top: -100,
+        left: 0,
+        right: 0,
+        height: 360,
+        zIndex: -1,
+        transform: [{ skewY: "-10deg" }],
+        overflow: "hidden",
     },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 12,
-        paddingHorizontal: 8,
+    gradient: {
+        flex: 1,
+    },
+
+    content: {
+        flex: 1,
+        marginTop: 20,
+        paddingHorizontal: 20,
+    },
+    heading: {
+        fontSize: 28,
+        fontWeight: "bold",
+        color: "#FFFFFF",
+        marginBottom: 20,
+        fontFamily: "Poppins_700Bold",
+    },
+
+    inputsContainer: {
+        backgroundColor: "white",
+        borderRadius: 16,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 2,
+    },
+    inputItem: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingVertical: 16,
+    },
+    divider: {
+        backgroundColor: "#f2f2f2",
+        width: "100%",
+        height: 1,
     },
 });
 

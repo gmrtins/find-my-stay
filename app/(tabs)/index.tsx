@@ -1,29 +1,43 @@
-import { View, Text, StyleSheet, Button, FlatList, ActivityIndicator, TouchableOpacity, TextInput, Touchable } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { fetchData } from '../api/service';
-import { IHotel } from '../types';
-import ListItem from '../components/ListItem';
-import { login } from '../configs/firebaseConfig';
-import BottomSheet, { BottomSheetFlatList, BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Filters, { IFilters } from '../components/Filters';
-import { getRatingMessage } from '../utils';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import colors from '../theme/colors';
+import {
+    View,
+    Text,
+    StyleSheet,
+    FlatList,
+    ActivityIndicator,
+} from "react-native";
+import { useTranslation } from "react-i18next";
+import React, {
+    useState,
+    useEffect,
+    useRef,
+    useCallback,
+    useMemo,
+} from "react";
+import { fetchData } from "../api/service";
+import { IHotel } from "../types";
+import ListItem from "../components/ListItem";
+import { login } from "../configs/firebaseConfig";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Filters, { IFilters } from "../components/Filters";
+import { getRatingMessage } from "../utils";
+import colors from "../theme/colors";
 import { LinearGradient } from "expo-linear-gradient";
+import { SearchBar } from "../components/SearchBar";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Homepage() {
+    const insets = useSafeAreaInsets();
+    const { t } = useTranslation();
+
     const sheetRef = useRef<BottomSheet>(null);
 
     const [data, setData] = useState<IHotel[]>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState("");
     const [filteredData, setFilteredData] = useState<IHotel[]>();
     const [isFiltersVisible, setIsFiltersVisible] = useState(false);
-
-    const { t } = useTranslation();
 
     useEffect(() => {
         const getData = async () => {
@@ -49,33 +63,35 @@ export default function Homepage() {
         setIsFiltersVisible(index > -1 ? true : false);
     }, []);
 
-
     const getMaxPrice = useMemo(() => {
-        return data?.reduce((max, p) => p.price > max ? p.price : max, data[0].price);
+        return data?.reduce(
+            (max, p) => (p.price > max ? p.price : max),
+            data[0].price
+        );
     }, [data]);
 
-
-
-
     const applyFilters = (f: IFilters) => {
-        let newData = data.filter(hotel => {
-            const matchesStars = f.stars.length === 0 || f.stars.includes(hotel.stars);
-            const matchesPrice = (!f.min_price || hotel.price >= f.min_price) && (!f.max_price || hotel.price <= f.max_price);
-            const matchesRating = f.rating.length === 0 || f.rating.includes(getRatingMessage(hotel.userRating));
+        let newData = data?.filter((hotel) => {
+            const matchesStars =
+                f.stars.length === 0 || f.stars.includes(hotel.stars);
+            const matchesPrice =
+                (!f.min_price || hotel.price >= f.min_price) &&
+                (!f.max_price || hotel.price <= f.max_price);
+            const matchesRating =
+                f.rating.length === 0 ||
+                f.rating.includes(getRatingMessage(hotel.userRating));
 
             return matchesStars && matchesPrice;
             //&& matchesRating;
         });
 
-        setFilteredData(newData.filter((item) => item !== null));
-
+        if (newData) setFilteredData(newData.filter((item) => item !== null));
 
         // setFilteredData(data?.filter((item) => item.name.includes(search)));
     };
 
-
-    const renderItem = ({ item }: { item: IHotel }) => (
-        <ListItem item={item} />
+    const renderItem = ({ item, index }: { item: IHotel; index: number }) => (
+        <ListItem item={item} index={index} />
     );
 
     if (loading) {
@@ -94,7 +110,6 @@ export default function Homepage() {
         );
     }
 
-
     return (
         <GestureHandlerRootView style={styles.container}>
             <LinearGradient
@@ -104,6 +119,7 @@ export default function Homepage() {
                     borderBottomLeftRadius: 16,
                     borderBottomRightRadius: 16,
                     padding: 16,
+                    paddingTop: insets.top + 16,
                 }}
             >
                 <View style={{ marginVertical: 24 }}>
@@ -112,24 +128,12 @@ export default function Homepage() {
                 </View>
 
                 {/* SEARCH */}
-                <View style={styles.topContainer}>
-                    <TextInput
-                        style={styles.searchBar}
-                        placeholder={t("homepage_search_placeholder")}
-                        onChangeText={(text) => setSearch(text)}
-                        placeholderTextColor={"#333333"}
-                    />
-                    <TouchableOpacity
-                        style={styles.filtersBtn}
-                        onPress={() =>
-                            isFiltersVisible
-                                ? sheetRef.current?.close()
-                                : sheetRef.current?.expand()
-                        }
-                    >
-                        <Ionicons name="filter" size={20} color={colors.BLUE} />
-                    </TouchableOpacity>
-                </View>
+                <SearchBar
+                    search={search}
+                    setSearch={setSearch}
+                    isFiltersVisible={isFiltersVisible}
+                    sheetRef={sheetRef}
+                />
             </LinearGradient>
 
             {/* HOTELS LIST */}
@@ -212,25 +216,6 @@ const styles = StyleSheet.create({
     error: {
         color: "red",
         fontSize: 16,
-    },
-
-    // SEARCH
-    searchBar: {
-        flex: 1,
-        height: 40,
-        borderRadius: 8,
-        color: "black",
-        backgroundColor: "white",
-        paddingHorizontal: 8,
-        fontFamily: "Poppins_400Regular",
-    },
-    filtersBtn: {
-        width: 40,
-        height: 40,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white",
-        borderRadius: 8,
     },
 
     // BOTTOM SHEET
