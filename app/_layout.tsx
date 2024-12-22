@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./configs/firebaseConfig";
 import { useTranslation } from "react-i18next";
@@ -11,9 +11,7 @@ import {
   Poppins_600SemiBold,
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
-import colors from "./theme/colors";
-
-import { NavigationContainer, NavigationIndependentTree, NavigationContainerRef } from '@react-navigation/native';
+import { NavigationIndependentTree } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Settings from "./(tabs)/Settings";
@@ -23,6 +21,7 @@ import LoginScreen from "./screens/LoginScreen";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Favorites from "./(tabs)/Favorites";
 import HotelDetails from "./screens/HotelDetails";
+import RegisterScreen from "./screens/RegisterScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -105,6 +104,7 @@ export default function RootLayout() {
             <>
               <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
               <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
             </>
           )}
         </Stack.Navigator>

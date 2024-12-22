@@ -10,6 +10,7 @@ interface IInput {
   value?: string;
   defaultValue?: string;
   secureTextEntry?: boolean;
+  autoCapitalize?: "none" | "sentences" | "words" | "characters";
 }
 
 export const Input = (props: IInput) => {
@@ -21,6 +22,7 @@ export const Input = (props: IInput) => {
     value,
     defaultValue,
     secureTextEntry,
+    autoCapitalize,
   } = props;
 
   return (
@@ -35,6 +37,7 @@ export const Input = (props: IInput) => {
         defaultValue={defaultValue}
         value={value}
         secureTextEntry={secureTextEntry}
+        autoCapitalize={autoCapitalize}
       />
       {rightIcon && rightIcon}
     </View>

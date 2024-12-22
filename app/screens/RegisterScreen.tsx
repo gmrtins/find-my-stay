@@ -6,8 +6,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import colors from "../theme/colors";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Entypo from "@expo/vector-icons/Entypo";
+import { register } from "../configs/firebaseConfig";
 
 const RegisterScreen = () => {
     const insets = useSafeAreaInsets();
@@ -18,10 +18,7 @@ const RegisterScreen = () => {
     const [password, setPassword] = useState("");
 
     const handleRegister = () => {
-        // Handle registration logic here
-        console.log("Name:", name);
-        console.log("Email:", email);
-        console.log("Password:", password);
+        register(name, email, password);
     };
 
     return (
@@ -34,12 +31,13 @@ const RegisterScreen = () => {
             </View>
 
             <View style={styles.content}>
-                <Text style={styles.heading}>{t("register_title")}</Text>
+                <Text style={styles.heading}>{t("register_screen_title")}</Text>
                 <View style={{ gap: 16 }}>
                     <View style={styles.inputsContainer}>
                         <View style={styles.inputItem}>
                             <Input
-                                placeholder={t("name")}
+
+                                placeholder={t("register_screen_name_placeholder")}
                                 value={name}
                                 onChange={setName}
                                 leftIcon={<Entypo name="user" size={16} color={colors.BLUE} />}
@@ -48,19 +46,21 @@ const RegisterScreen = () => {
                         <View style={styles.divider}></View>
                         <View style={styles.inputItem}>
                             <Input
-                                placeholder={t("email")}
+                                placeholder={t("register_screen_email_placeholder")}
                                 value={email}
                                 onChange={setEmail}
                                 leftIcon={<Entypo name="mail" size={16} color={colors.BLUE} />}
+                                autoCapitalize="none"
                             />
                         </View>
                         <View style={styles.divider}></View>
                         <View style={styles.inputItem}>
                             <Input
-                                placeholder={t("password")}
+                                placeholder={t("register_screen_password_placeholder")}
                                 value={password}
                                 onChange={setPassword}
                                 secureTextEntry
+                                autoCapitalize="none"
                                 leftIcon={<Entypo name="lock" size={16} color={colors.BLUE} />}
                             />
                         </View>
@@ -68,7 +68,7 @@ const RegisterScreen = () => {
                     <Button
                         type="primary"
                         onPress={handleRegister}
-                        text={t("Register")}
+                        text={t("register_screen_register_btn")}
                     />
                 </View>
             </View>

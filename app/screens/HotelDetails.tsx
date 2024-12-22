@@ -5,6 +5,7 @@ import {
     Dimensions,
     Image,
     TouchableOpacity,
+    Linking,
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -33,7 +34,6 @@ const PlaceholderImageUri =
     "https://blocks.astratic.com/img/general-img-portrait.png";
 
 export default function HotelDetails({ route }) {
-    // const router = useRouter();
     const { data } = route.params;
     const navigation = useNavigation();
 
@@ -134,20 +134,19 @@ export default function HotelDetails({ route }) {
                         </Text>
                     </View>
                 </View>
-
+                {/* <View style={{ flexDirection: 'row', gap: 8 }}>
+                    <TouchableOpacity style={styles.contactBtn} onPress={() => Linking.openURL(`tel:${hotel.contact.phoneNumber}`)}>
+                        <FontAwesome name="phone" size={20} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.contactBtn} onPress={() => Linking.openURL(`mailto:${hotel.contact.email}`)}>
+                        <FontAwesome name="envelope" size={20} color="white" />
+                    </TouchableOpacity>
+                </View> */}
                 <View style={styles.addressContainer}>
                     <FontAwesome name="map-marker" size={25} color={colors.BLUE} />
                     <Text>{hotel.location.address + " - " + hotel.location.city}</Text>
                 </View>
 
-                {/* {hotel.contact.phoneNumber &&
-                      <TouchableOpacity style={styles.contactBtn} onPress={() => Linking.openURL(`tel:${hotel.contact.phoneNumber}`)}>
-                          <FontAwesome name="phone" size={20} color="white" />
-                      </TouchableOpacity>}
-                  {hotel.contact.email &&
-                      <TouchableOpacity style={styles.contactBtn} onPress={() => Linking.openURL(`mailto:${hotel.contact.email}`)}>
-                          <FontAwesome name="envelope" size={20} color="white" />
-                      </TouchableOpacity>} */}
 
                 <MapView
                     style={styles.map}
