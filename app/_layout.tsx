@@ -1,13 +1,7 @@
-import { Stack, useRouter } from "expo-router";
-import "./i18n";
-import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useEffect, useState } from "react";
-import { changeLanguage } from "i18next";
+import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./configs/firebaseConfig";
 import { useTranslation } from "react-i18next";
-import { HotelDetailsParams } from "./types";
 import { FavoritesProvider } from "./contexts/FavoriteContext";
 import {
   useFonts,
@@ -17,12 +11,26 @@ import {
   Poppins_600SemiBold,
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
+import colors from "./theme/colors";
+
+import { NavigationContainer, NavigationIndependentTree, NavigationContainerRef } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Settings from "./(tabs)/Settings";
+import Homepage from "./(tabs)/Homepage";
+import SplashScreen from "./screens/SplashScreen";
+import LoginScreen from "./screens/LoginScreen";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Favorites from "./(tabs)/Favorites";
+import HotelDetails from "./screens/HotelDetails";
+
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function RootLayout() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
-
+  const [initializing, setInitializing] = React.useState(true);
+  const [user, setUser] = React.useState(null);
   let [fontsLoaded] = useFonts({
     Poppins_300Light,
     Poppins_400Regular,
@@ -31,38 +39,76 @@ export default function RootLayout() {
     Poppins_700Bold,
   });
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        router.replace('/(tabs)');
-      } else {
-        router.replace('/screens/LoginScreen');
-      }
-      setLoading(false);
-    });
+  const onAuthStateChangedHandler = (user) => {
+    setUser(user);
+    if (initializing) {
+      setInitializing(false);
+    }
+  };
 
-    return () => unsubscribe();
-  }, [router]);
-  const insets = useSafeAreaInsets();
-  if (!fontsLoaded) {
-    return null;
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, onAuthStateChangedHandler);
+
+    return unsubscribe;
+  }, []);
+
+
+  if (initializing || !fontsLoaded) {
+    return (
+      <SplashScreen navigation={undefined} />
+    );
   }
+
+  function MainTabs() {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={Homepage} options={{
+          headerShown: false,
+          title: t("tab_homepage"),
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={20} name="hotel" color={color} />
+          ),
+        }} />
+        <Tab.Screen
+          name="Favorites"
+          component={Favorites}
+          options={{
+            headerShown: false,
+            title: t("tab_favorites"),
+            tabBarIcon: ({ color }) => (
+              <FontAwesome size={20} name="bookmark-o" color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen name="Settings" component={Settings} options={{
+          headerShown: false,
+          title: t("tab_settings"),
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={20} name="gear" color={color} />
+          ),
+        }} />
+      </Tab.Navigator>
+    );
+  }
+
+
   return (
     <FavoritesProvider>
-      <View style={{
-        flex: 1, marginTop: insets.top
-      }}>
-        <Stack initialRouteName="screens/LoginScreen">
-          <Stack.Screen name="screens/LoginScreen" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false, title: t("hotels_list_title"), }} />
-          <Stack.Screen
-            name="screens/HotelDetails"
-            options={({ route }) => ({
-              title: (route.params as HotelDetailsParams)?.name || t("hotel_details_title"),
-            })}
-          />
-        </Stack>
-      </View>
+      <NavigationIndependentTree>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {user ? (
+            <>
+              <Stack.Screen name="Main" component={MainTabs} options={{ headerShown: false }} />
+              <Stack.Screen name="Details" component={HotelDetails} options={{ headerShown: false }} />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+              <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationIndependentTree>
     </FavoritesProvider>
   );
 }

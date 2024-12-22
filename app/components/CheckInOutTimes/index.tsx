@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import RangeSlider, { Slider } from 'react-native-range-slider-expo';
-import { useTranslation } from 'react-i18next';
 import { ICheckInOut } from '@/app/types';
 import colors from '@/app/theme/colors';
 
@@ -13,8 +11,6 @@ interface ICheckInOutTimesProps {
 
 export default function CheckInOutTimes(props: ICheckInOutTimesProps) {
     const { title, time } = props;
-
-    const stars = Array.from({ length: 5 }, (_, i) => i + 1);
 
     return (
         <View style={styles.container}>

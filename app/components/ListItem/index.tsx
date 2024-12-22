@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTranslation } from "react-i18next";
-import { router } from "expo-router";
 import { getCurrencySymbol } from "@/app/utils";
 import colors from "@/app/theme/colors";
+import { useNavigation } from "@react-navigation/native";
 
 interface IListItemProps {
     item: IHotel;
@@ -16,6 +16,7 @@ export default function ListItem(props: IListItemProps) {
     const [img, setImg] = useState(item.gallery[0]);
 
     const { t } = useTranslation();
+    const navigation = useNavigation();
 
     const renderStars = (rating: number) => {
         const stars = [];
@@ -25,14 +26,7 @@ export default function ListItem(props: IListItemProps) {
         return stars;
     }
     return (
-        <TouchableOpacity style={styles.container} onPress={() => router.push({
-            pathname: "/screens/HotelDetails",
-            params: { data: JSON.stringify(item), name: item.name, }
-
-        })}>
-
-
-
+        <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('Details', { data: item })}>
             <View style={{ flexDirection: "row", gap: 10 }}>
                 <Image source={{ uri: img }} onError={() => setImg("https://blocks.astratic.com/img/general-img-portrait.png")}
                     style={styles.image} />
@@ -41,11 +35,6 @@ export default function ListItem(props: IListItemProps) {
                     <View style={[styles.rowContainer, { marginBottom: 5 }]}>
                         {renderStars(item.stars)}
                     </View>
-                    {/* <View style={styles.rowContainer}>
-                        <FontAwesome size={16} name="thumbs-o-up" color={"#F2007E"} />
-                        <Text style={styles.title}>{item.userRating}</Text>
-                    </View> */}
-
                     <View style={[styles.rowContainer, { alignItems: 'flex-end' }]}>
                         <Text style={[styles.body, { fontSize: 18, fontWeight: 'bold', color: colors.BLUE }]}>{item.price + ' ' + getCurrencySymbol(item.currency)}</Text>
                         <Text style={[styles.body, { fontSize: 10, fontWeight: 'light', marginBottom: 2 }]}>{t('per_night_tag')}</Text>
@@ -105,6 +94,13 @@ const styles = StyleSheet.create({
         color: "red",
         fontSize: 16,
     },
-    rowContainer: { flexDirection: "row", gap: 5 },
-    image: { width: 75, height: 75, borderRadius: 12 }
+    rowContainer: {
+        flexDirection: "row",
+        gap: 5
+    },
+    image: {
+        width: 75,
+        height: 75,
+        borderRadius: 12
+    }
 });
