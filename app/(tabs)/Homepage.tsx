@@ -14,7 +14,6 @@ import { login } from "../configs/firebaseConfig";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Filters, { IFilters } from "../components/Filters";
-import { getRatingMessage } from "../utils";
 import colors from "../theme/colors";
 import { LinearGradient } from "expo-linear-gradient";
 import { SearchBar } from "../components/SearchBar";

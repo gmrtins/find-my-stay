@@ -26,5 +26,16 @@
     "settings_screen_logout_btn": "Terminar Sessão",
     "settings": "Configurações",
     "language": "Idioma",
-    "save_btn": "Guardar"
+    "save_btn": "Guardar",
+    "register_screen_title": "Registar",
+    "register_screen_name_placeholder": "Nome",
+    "register_screen_email_placeholder": "Email",
+    "register_screen_password_placeholder": "Palavra-passe",
+    "register_screen_register_btn": "Registar",
+    "favorites_no_favorites_label": "Sem favoritos",
+    "filters_title": "Filtros",
+    "filters_stars_title": "Estrelas",
+    "filters_rating_title": "Avaliações",
+    "filters_price_title": "Preço",
+    "filters_apply_btn": "Aplicar"
 }
