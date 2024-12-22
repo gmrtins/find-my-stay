@@ -6,20 +6,21 @@ import {
     SafeAreaView,
     Image,
 } from "react-native";
-import { logout, auth } from "../configs/firebaseConfig";
-import { useEffect, useState } from "react";
+import { login, logout } from "../configs/firebaseConfig";
+import { useState } from "react";
 import i18n, { changeAppLanguage } from "../i18n";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTranslation } from "react-i18next";
 import colors from "../theme/colors";
-
-const PlaceholderImageUri =
-    "https://blocks.astratic.com/img/general-img-portrait.png";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Profile } from "../components/Profile";
+import { LanguagePicker } from "../components/LanguagePicker";
 
 export default function Settings() {
+    const insets = useSafeAreaInsets();
     const { t } = useTranslation();
-    const [imageUri, setImageUri] = useState(auth.currentUser?.photoURL);
+
     const [selectedScreen, setSelectedScreen] = useState<"settings" | "language">(
         "settings"
     );
@@ -34,157 +35,51 @@ export default function Settings() {
         }
     };
 
-    useEffect(() => {
-        if (auth.currentUser?.photoURL) setImageUri(auth.currentUser?.photoURL);
-    }, [auth]);
-
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.diagonalBackground}>
                 <LinearGradient
                     colors={["#0974d3", colors.BLUE]}
-                    style={styles.gradient}
+                    style={[styles.gradient, { paddingTop: insets.top + 16 }]}
                 />
             </View>
 
             <View style={styles.content}>
                 <Text style={styles.heading}>{t(selectedScreen)}</Text>
 
-                {selectedScreen === "settings" && (
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            gap: 16,
-                            marginBottom: 32,
-                            alignItems: "center",
-                        }}
-                    >
-                        <Image
-                            source={{ uri: imageUri as string }}
-                            onError={() => setImageUri(PlaceholderImageUri)}
-                            style={{ width: 60, height: 60, borderRadius: 60 }}
-                            resizeMode="cover"
-                        />
-
-                        <View style={{ flexDirection: "column" }}>
-                            <Text
-                                style={{
-                                    fontFamily: "Poppins_700Bold",
-                                    fontSize: 22,
-                                    color: "white",
-                                }}
-                            >
-                                {auth.currentUser?.displayName}
-                            </Text>
-                            <Text
-                                style={{
-                                    fontFamily: "Poppins_500Medium",
-                                    fontSize: 16,
-                                    color: "white",
-                                }}
-                            >
-                                {auth.currentUser?.email}
-                            </Text>
-                        </View>
-                    </View>
-                )}
+                {selectedScreen === "settings" && <Profile />}
 
                 {selectedScreen === "language" && (
-                    <View style={{ gap: 16 }}>
-                        <View
-                            style={{
-                                backgroundColor: "white",
-                                borderRadius: 16,
-                                paddingHorizontal: 16,
-                                paddingVertical: 8,
-                                shadowColor: "#000",
-                                shadowOpacity: 0.1,
-                                shadowRadius: 5,
-                                elevation: 2,
-                            }}
-                        >
-                            <TouchableOpacity
-                                style={styles.settingItem}
-                                onPress={() => setSelectedLanguage("pt-PT")}
-                            >
-                                <Text style={styles.menuText}>🇵🇹 Português</Text>
-                                {selectedLanguage === "pt-PT" && (
-                                    <FontAwesome size={16} name="check" color={colors.BLUE} />
-                                )}
-                            </TouchableOpacity>
-                            <View style={styles.divider}></View>
-                            <TouchableOpacity
-                                style={styles.settingItem}
-                                onPress={() => setSelectedLanguage("en-GB")}
-                            >
-                                <Text style={styles.menuText}>🇬🇧 English</Text>
-                                {selectedLanguage === "en-GB" && (
-                                    <FontAwesome size={16} name="check" color={colors.BLUE} />
-                                )}
-                            </TouchableOpacity>
-                            <View style={styles.divider}></View>
-                            <TouchableOpacity
-                                style={styles.settingItem}
-                                onPress={() => setSelectedLanguage("es-ES")}
-                            >
-                                <Text style={styles.menuText}>🇪🇸 Español</Text>
-                                {selectedLanguage === "es-ES" && (
-                                    <FontAwesome size={16} name="check" color={colors.BLUE} />
-                                )}
-                            </TouchableOpacity>
-                        </View>
-                        <TouchableOpacity
-                            style={styles.saveButton}
-                            onPress={() => {
-                                applyLanguage();
-                            }}
-                        >
-                            <Text style={styles.saveButtonText}>{t("save_btn")}</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <LanguagePicker
+                        selectedLanguage={selectedLanguage}
+                        setSelectedLanguage={setSelectedLanguage}
+                        applyLanguage={applyLanguage}
+                    />
                 )}
 
                 {selectedScreen === "settings" && (
                     <View style={{ gap: 16 }}>
-                        <View
-                            style={{
-                                backgroundColor: "white",
-                                borderRadius: 16,
-                                paddingHorizontal: 16,
-                                paddingVertical: 8,
-                                shadowColor: "#000",
-                                shadowOpacity: 0.1,
-                                shadowRadius: 5,
-                                elevation: 2,
-                            }}
-                        >
+                        <View style={styles.menu}>
                             <TouchableOpacity
                                 style={styles.menuItem}
                                 onPress={() => setSelectedScreen("language")}
                             >
                                 <FontAwesome size={16} name="globe" color={colors.BLUE} />
-                                <Text style={styles.menuText}>{t("settings_screen_language_btn")}</Text>
+                                <Text style={styles.menuText}>
+                                    {t("settings_screen_language_btn")}
+                                </Text>
                             </TouchableOpacity>
                         </View>
 
-                        <View
-                            style={{
-                                backgroundColor: "white",
-                                borderRadius: 16,
-                                paddingHorizontal: 16,
-                                paddingVertical: 8,
-                                shadowColor: "#000",
-                                shadowOpacity: 0.1,
-                                shadowRadius: 5,
-                                elevation: 2,
-                            }}
-                        >
+                        <View style={styles.menu}>
                             <TouchableOpacity
                                 style={styles.menuItem}
                                 onPress={() => logout()}
                             >
                                 <FontAwesome size={16} name="plane" color={colors.BLUE} />
-                                <Text style={styles.menuText}>{t("settings_screen_logout_btn")}</Text>
+                                <Text style={styles.menuText}>
+                                    {t("settings_screen_logout_btn")}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -223,6 +118,17 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#FFFFFF",
         marginBottom: 20,
+        fontFamily: "Poppins_700Bold",
+    },
+    menu: {
+        backgroundColor: "white",
+        borderRadius: 16,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 2,
     },
     menuItem: {
         flexDirection: "row",

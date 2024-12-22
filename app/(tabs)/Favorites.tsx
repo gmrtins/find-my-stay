@@ -1,20 +1,33 @@
-import { View, Text, StyleSheet, Button, FlatList, ActivityIndicator, TouchableOpacity, TextInput } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { useState, useEffect, useContext } from 'react';
-import { fetchData } from '../api/service';
-import { IHotel } from '../types';
-import ListItem from '../components/ListItem';
-import { FavoritesContext } from '../contexts/FavoriteContext';
-import colors from '../theme/colors';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Button,
+    FlatList,
+    ActivityIndicator,
+    TouchableOpacity,
+    TextInput,
+} from "react-native";
+import { useTranslation } from "react-i18next";
+import { useState, useEffect, useContext } from "react";
+import { fetchData } from "../api/service";
+import { IHotel } from "../types";
+import ListItem from "../components/ListItem";
+import { FavoritesContext } from "../contexts/FavoriteContext";
+import colors from "../theme/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Favorites() {
+    const insets = useSafeAreaInsets();
+    const { t } = useTranslation();
+    const { favorites } = useContext(FavoritesContext);
+
     const [data, setData] = useState<IHotel[]>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [filteredData, setFilteredData] = useState<IHotel[]>();
     const [refreshing, setRefreshing] = useState(true);
-    const { t } = useTranslation();
-    const { favorites } = useContext(FavoritesContext);
+
     useEffect(() => {
         const getDataFromAPI = async () => {
             try {
@@ -35,8 +48,8 @@ export default function Favorites() {
         setRefreshing(false);
     }, [data, refreshing, favorites]);
 
-    const renderItem = ({ item }: { item: IHotel }) => (
-        <ListItem item={item} />
+    const renderItem = ({ item, index }: { item: IHotel; index: number }) => (
+        <ListItem item={item} index={index} />
     );
 
     if (loading) {
@@ -55,15 +68,27 @@ export default function Favorites() {
         );
     }
     return (
-        <View style={styles.container}>
-            <Text style={styles.header}>{t('favorites_title')}</Text>
+        <View style={[styles.container, { paddingTop: insets.top }]}>
+            <Text style={styles.header}>{t("favorites_title")}</Text>
             <FlatList
                 data={filteredData}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}
-                onRefresh={() => { setRefreshing(true) }}
+                onRefresh={() => {
+                    setRefreshing(true);
+                }}
                 refreshing={refreshing}
-                ListEmptyComponent={<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'red' }}><Text>{t('favorites_no_favorites_label')}</Text></View>}
+                ListEmptyComponent={
+                    <View
+                        style={{
+                            flex: 1,
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Text>{t("favorites_no_favorites_label")}</Text>
+                    </View>
+                }
             />
         </View>
     );
@@ -77,10 +102,10 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 28,
-        fontWeight: "bold",
         marginVertical: 24,
         width: 200,
         color: "#333",
+        fontFamily: "Poppins_700Bold",
     },
     item: {
         padding: 10,
