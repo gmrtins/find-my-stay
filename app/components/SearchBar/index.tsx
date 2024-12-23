@@ -2,7 +2,7 @@ import colors from "@/app/theme/colors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Entypo from "@expo/vector-icons/Entypo";
 import { t } from "i18next";
-import React, { ForwardedRef } from "react";
+import React from "react";
 import {
   Keyboard,
   TextInput,
@@ -18,7 +18,7 @@ interface ISearchBar {
   sheetRef: any;
 }
 
-export const SearchBar = ({
+const SearchBar = ({
   search,
   setSearch,
   isFiltersVisible,
@@ -97,3 +97,5 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_400Regular",
   },
 });
+
+export default SearchBar;

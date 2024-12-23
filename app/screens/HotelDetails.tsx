@@ -5,8 +5,8 @@ import {
     Dimensions,
     Image,
     TouchableOpacity,
+    Linking,
 } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
 import Carousel from "react-native-reanimated-carousel";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Stars from "../components/Stars";
@@ -19,21 +19,29 @@ import CheckInOutTimes from "../components/CheckInOutTimes";
 import { FavoritesContext } from "../contexts/FavoriteContext";
 import colors from "../theme/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
+import {
+    configureReanimatedLogger,
+    ReanimatedLogLevel,
+} from 'react-native-reanimated';
+import { useNavigation } from "@react-navigation/native";
+
+configureReanimatedLogger({
+    level: ReanimatedLogLevel.warn,
+    strict: false,
+});
 
 const PlaceholderImageUri =
     "https://blocks.astratic.com/img/general-img-portrait.png";
 
-export default function HotelDetails() {
-    const router = useRouter();
+export default function HotelDetails({ route }) {
+    const { data } = route.params;
+    const navigation = useNavigation();
+
     const insets = useSafeAreaInsets();
     const [isLoading, setIsLoading] = useState(true);
     const { t } = useTranslation();
     const { favorites, add, remove } = useContext(FavoritesContext);
-    const params = useLocalSearchParams();
-    const hotel: IHotel = JSON.parse(
-        Array.isArray(params.data) ? params.data[0] : params.data
-    );
+    const hotel: IHotel = data
     const width = Dimensions.get("window").width;
 
     const isFavorite = useMemo(
@@ -42,7 +50,7 @@ export default function HotelDetails() {
     );
 
     return (
-        <View style={[styles.container, { marginTop: insets.top }]}>
+        <View style={[styles.container, { paddingTop: insets.top }]}>
             <View
                 style={{
                     flexDirection: "row",
@@ -52,7 +60,7 @@ export default function HotelDetails() {
                     gap: 16,
                 }}
             >
-                <TouchableOpacity onPress={() => router.back()}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
                     <FontAwesome name={"arrow-left"} size={20} color={colors.BLUE} />
                 </TouchableOpacity>
                 <Text style={styles.heading}>{hotel.name}</Text>
@@ -126,20 +134,19 @@ export default function HotelDetails() {
                         </Text>
                     </View>
                 </View>
-
+                {/* <View style={{ flexDirection: 'row', gap: 8 }}>
+                    <TouchableOpacity style={styles.contactBtn} onPress={() => Linking.openURL(`tel:${hotel.contact.phoneNumber}`)}>
+                        <FontAwesome name="phone" size={20} color="white" />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.contactBtn} onPress={() => Linking.openURL(`mailto:${hotel.contact.email}`)}>
+                        <FontAwesome name="envelope" size={20} color="white" />
+                    </TouchableOpacity>
+                </View> */}
                 <View style={styles.addressContainer}>
                     <FontAwesome name="map-marker" size={25} color={colors.BLUE} />
                     <Text>{hotel.location.address + " - " + hotel.location.city}</Text>
                 </View>
 
-                {/* {hotel.contact.phoneNumber &&
-                      <TouchableOpacity style={styles.contactBtn} onPress={() => Linking.openURL(`tel:${hotel.contact.phoneNumber}`)}>
-                          <FontAwesome name="phone" size={20} color="white" />
-                      </TouchableOpacity>}
-                  {hotel.contact.email &&
-                      <TouchableOpacity style={styles.contactBtn} onPress={() => Linking.openURL(`mailto:${hotel.contact.email}`)}>
-                          <FontAwesome name="envelope" size={20} color="white" />
-                      </TouchableOpacity>} */}
 
                 <MapView
                     style={styles.map}
@@ -196,7 +203,11 @@ const styles = StyleSheet.create({
         gap: 5,
         borderRadius: 16,
     },
-    addressContainer: { flexDirection: "row", alignItems: "center", gap: 8 },
+    addressContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8
+    },
     contactBtn: {
         backgroundColor: colors.BLUE,
         borderRadius: 100,
@@ -210,17 +221,38 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         gap: 8,
     },
-    userRatingLabel: { fontSize: 32, fontWeight: "bold", color: colors.BLUE },
-    ratingMessageLabel1: { fontSize: 14, fontWeight: "bold", color: colors.BLUE },
-    ratingMessageLabel2: { fontSize: 12, color: "#808089" },
-    userRatingContainer: { flexDirection: "row", gap: 8, alignItems: "center" },
-    ratingContainer: { flexDirection: "column" },
+    userRatingLabel: {
+        fontSize: 32,
+        fontWeight: "bold",
+        color: colors.BLUE
+    },
+    ratingMessageLabel1: {
+        fontSize: 14,
+        fontWeight: "bold",
+        color: colors.BLUE
+    },
+    ratingMessageLabel2: {
+        fontSize: 12,
+        color: "#808089"
+    },
+    userRatingContainer: {
+        flexDirection: "row",
+        gap: 8,
+        alignItems: "center"
+    },
+    ratingContainer: {
+        flexDirection: "column"
+    },
     ratingMessageContainer: {
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
     },
-    map: { width: "100%", height: 200, borderRadius: 16 },
+    map: {
+        width: "100%",
+        height: 200,
+        borderRadius: 16
+    },
     favoriteBtn: {
         position: "absolute",
         right: 16,

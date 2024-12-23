@@ -2,11 +2,8 @@ import {
     View,
     Text,
     StyleSheet,
-    Button,
     FlatList,
     ActivityIndicator,
-    TouchableOpacity,
-    TextInput,
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect, useContext } from "react";
@@ -48,8 +45,8 @@ export default function Favorites() {
         setRefreshing(false);
     }, [data, refreshing, favorites]);
 
-    const renderItem = ({ item, index }: { item: IHotel; index: number }) => (
-        <ListItem item={item} index={index} />
+    const renderItem = ({ item }: { item: IHotel }) => (
+        <ListItem item={item} />
     );
 
     if (loading) {

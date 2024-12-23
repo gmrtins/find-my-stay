@@ -36,10 +36,10 @@ export default function Filters(props: IFiltersProps) {
 
     return (
         <View style={styles.filtersContainer}>
-            <Text style={styles.title}>Filter</Text>
+            <Text style={styles.title}>{t('filters_title')}</Text>
 
             {/* STARS */}
-            <Text style={styles.filterTitle}>Stars</Text>
+            <Text style={styles.filterTitle}>{t('filters_stars_title')}</Text>
             <View style={{ flexDirection: "row", gap: 5 }}>
                 {stars.map((_, index) => <TouchableOpacity key={index.toString()} style={filters.stars.includes(index + 1) ? [styles.ratingBtn, { backgroundColor: '#f2f2f2' }] : styles.ratingBtn} onPress={() => {
                     if (filters.stars.includes(index + 1)) {
@@ -55,7 +55,7 @@ export default function Filters(props: IFiltersProps) {
             <View style={styles.divider}></View>
 
             {/* RATING */}
-            <Text style={styles.filterTitle}>Rating</Text>
+            <Text style={styles.filterTitle}>{t('filters_rating_title')}</Text>
             <View style={{ flexDirection: "row", gap: 5 }}>
                 {ratings.map((r, index) => <TouchableOpacity key={index.toString()} style={filters.rating.includes(r) ? [styles.ratingBtn, { backgroundColor: '#f2f2f2' }] : styles.ratingBtn} onPress={() => {
                     if (filters.rating.includes(r)) {
@@ -71,7 +71,7 @@ export default function Filters(props: IFiltersProps) {
 
             {/* PRICE RANGE */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
-                <Text style={styles.filterTitle}>Price</Text>
+                <Text style={styles.filterTitle}>{t('filters_price_title')}</Text>
                 <Text style={styles.filterTitle}>{`${filters.min_price} € - ${filters.max_price} €`}</Text>
             </View>
             <View style={{ height: 40, flexDirection: 'row', alignItems: 'center', marginBottom: 32 }}>
@@ -91,7 +91,7 @@ export default function Filters(props: IFiltersProps) {
             </View>
 
             <TouchableOpacity style={styles.applyButton} onPress={() => { onApplyFilters(filters) }}>
-                <Text style={styles.applyButtonText}>Apply</Text>
+                <Text style={styles.applyButtonText}>{t('filters_apply_btn')}</Text>
             </TouchableOpacity >
         </View>
     );

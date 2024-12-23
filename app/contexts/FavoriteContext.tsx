@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { addFavorite, auth, getFavorites, removeFavorite } from "../configs/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 

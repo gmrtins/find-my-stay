@@ -1,4 +1,3 @@
-import { router } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, SafeAreaView } from "react-native";
 import { login } from "../configs/firebaseConfig";
@@ -6,14 +5,15 @@ import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import colors from "../theme/colors";
-import { Button } from "../components/Button";
+import { useNavigation } from "@react-navigation/native";
+import Button from "../components/Button";
 
 export default function LoginScreen() {
     const insets = useSafeAreaInsets();
     const { t } = useTranslation();
-
-    const [email, setEmail] = useState("gmrtins@aol.co.uk");
-    const [password, setPassword] = useState("password");
+    const navigation = useNavigation();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     return (
         <SafeAreaView style={styles.container}>
@@ -54,7 +54,7 @@ export default function LoginScreen() {
                     />
                     <Button
                         type="secondary"
-                        onPress={() => router.push("/screens/RegisterScreen")}
+                        onPress={() => navigation.navigate("Register")}
                         text={t("login_screen_register_btn")}
                     />
                 </View>
@@ -69,10 +69,10 @@ const styles = StyleSheet.create({
     },
     diagonalBackground: {
         position: "absolute",
-        top: -100,
-        left: 0,
+        top: -190,
+        left: -100,
         right: 0,
-        height: 360,
+        height: 460,
         zIndex: -1,
         transform: [{ skewY: "-10deg" }],
         overflow: "hidden",

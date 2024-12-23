@@ -9,7 +9,7 @@ interface ILanguagePicker {
   applyLanguage: () => void;
 }
 
-export const LanguagePicker = ({
+const LanguagePicker = ({
   selectedLanguage,
   setSelectedLanguage,
   applyLanguage,
@@ -104,3 +104,5 @@ const styles = StyleSheet.create({
     color: "#333333",
   },
 });
+
+export default LanguagePicker;

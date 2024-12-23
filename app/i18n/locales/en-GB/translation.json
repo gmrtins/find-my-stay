@@ -26,5 +26,16 @@
     "settings_screen_logout_btn": "Logout",
     "settings": "Settings",
     "language": "Language",
-    "save_btn": "Save"
+    "save_btn": "Save",
+    "register_screen_title": "Sign up",
+    "register_screen_name_placeholder": "Name",
+    "register_screen_email_placeholder": "Email",
+    "register_screen_password_placeholder": "Password",
+    "register_screen_register_btn": "Sign up",
+    "favorites_no_favorites_label": "No favorites",
+    "filters_title": "Filters",
+    "filters_stars_title": "Stars",
+    "filters_rating_title": "Ratings",
+    "filters_price_title": "Price",
+    "filters_apply_btn": "Apply"
 }

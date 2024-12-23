@@ -5,7 +5,7 @@ import { auth } from "../../configs/firebaseConfig";
 const PlaceholderImageUri =
   "https://blocks.astratic.com/img/general-img-portrait.png";
 
-export const Profile = () => {
+const Profile = () => {
   const [imageUri, setImageUri] = useState(auth.currentUser?.photoURL);
 
   useEffect(() => {
@@ -49,3 +49,5 @@ const styles = StyleSheet.create({
     color: "white",
   },
 });
+
+export default Profile;

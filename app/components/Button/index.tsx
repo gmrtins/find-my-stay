@@ -8,7 +8,7 @@ interface IButton {
   icon?: ReactNode;
 }
 
-export const Button = (props: IButton) => {
+const Button = (props: IButton) => {
   const { type, text, onPress, icon } = props;
 
   return (
@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    elevation: 2,
     paddingVertical: 8,
     borderRadius: 10,
     alignItems: "center",
@@ -50,3 +49,5 @@ const styles = StyleSheet.create({
     color: "#1A94FF",
   },
 });
+
+export default Button;
