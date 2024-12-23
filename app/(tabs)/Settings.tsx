@@ -5,8 +5,10 @@ import {
     TouchableOpacity,
     SafeAreaView,
     Image,
+    Platform,
+    Dimensions,
 } from "react-native";
-import { login, logout } from "../configs/firebaseConfig";
+import { logout } from "../configs/firebaseConfig";
 import { useState } from "react";
 import i18n, { changeAppLanguage } from "../i18n";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,8 +16,8 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTranslation } from "react-i18next";
 import colors from "../theme/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Profile } from "../components/Profile";
-import { LanguagePicker } from "../components/LanguagePicker";
+import Profile from "../components/Profile";
+import LanguagePicker from "../components/LanguagePicker";
 
 export default function Settings() {
     const insets = useSafeAreaInsets();
@@ -46,9 +48,7 @@ export default function Settings() {
 
             <View style={styles.content}>
                 <Text style={styles.heading}>{t(selectedScreen)}</Text>
-
                 {selectedScreen === "settings" && <Profile />}
-
                 {selectedScreen === "language" && (
                     <LanguagePicker
                         selectedLanguage={selectedLanguage}
@@ -93,15 +93,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white",
-        padding: 32,
     },
     diagonalBackground: {
         position: "absolute",
         top: -100,
-        left: 0,
+        width: Platform.OS === 'ios' ? Dimensions.get("window").width : Dimensions.get("window").width * 3,
         right: 0,
         height: 360,
-        zIndex: -1,
         transform: [{ skewY: "-10deg" }],
         overflow: "hidden",
     },

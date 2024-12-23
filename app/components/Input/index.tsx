@@ -13,7 +13,7 @@ interface IInput {
   autoCapitalize?: "none" | "sentences" | "words" | "characters";
 }
 
-export const Input = (props: IInput) => {
+const Input = (props: IInput) => {
   const {
     leftIcon,
     rightIcon,
@@ -63,3 +63,5 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_400Regular",
   },
 });
+
+export default Input;

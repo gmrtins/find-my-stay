@@ -16,7 +16,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Filters, { IFilters } from "../components/Filters";
 import colors from "../theme/colors";
 import { LinearGradient } from "expo-linear-gradient";
-import { SearchBar } from "../components/SearchBar";
+import SearchBar from "../components/SearchBar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Homepage() {

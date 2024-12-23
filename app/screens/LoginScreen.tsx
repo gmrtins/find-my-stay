@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import colors from "../theme/colors";
-import { Button } from "../components/Button";
+import Button from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 
 export default function LoginScreen() {

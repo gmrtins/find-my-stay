@@ -8,7 +8,7 @@ interface IButton {
   icon?: ReactNode;
 }
 
-export const Button = (props: IButton) => {
+const Button = (props: IButton) => {
   const { type, text, onPress, icon } = props;
 
   return (
@@ -49,3 +49,5 @@ const styles = StyleSheet.create({
     color: "#1A94FF",
   },
 });
+
+export default Button;
