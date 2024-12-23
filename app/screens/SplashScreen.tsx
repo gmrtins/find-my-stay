@@ -1,20 +1,34 @@
-import React, { useEffect } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import colors from '../theme/colors';
+import LottieView from 'lottie-react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function SplashScreen({ navigation }) {
+export default function SplashScreen() {
+    const animation = useRef<LottieView>(null);
+    const navigation = useNavigation();
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
-            console.log('user', user);
-            navigation.replace(user ? 'Main' : 'Login');
-        });
-        return unsubscribe;
+        const timeout = setTimeout(() => {
+
+            const unsubscribe = onAuthStateChanged(getAuth(), (user) => {
+                navigation.navigate(user ? 'Main' : 'Login');
+            });
+            return unsubscribe;
+        }, 2000);
+        return () => clearTimeout(timeout);
+
     }, []);
+
 
     return (
         <View style={styles.centeredView}>
-            <ActivityIndicator size="large" color={colors.BLUE} />
+            <LottieView
+                autoPlay
+                ref={animation}
+                style={styles.lottie}
+                source={require('./../assets/animations/splash.json')}
+                speed={3.5}
+            />
         </View>
     );
 }
@@ -24,5 +38,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: "#C7E5F0",
+    },
+    lottie: {
+        top: 100,
+        width: Dimensions.get('window').width * 2,
+        height: Dimensions.get('window').height * 2,
     },
 });

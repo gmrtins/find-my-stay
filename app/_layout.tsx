@@ -51,13 +51,6 @@ export default function RootLayout() {
     return unsubscribe;
   }, []);
 
-
-  if (initializing || !fontsLoaded) {
-    return (
-      <SplashScreen navigation={undefined} />
-    );
-  }
-
   function MainTabs() {
     return (
       <Tab.Navigator>
@@ -105,6 +98,7 @@ export default function RootLayout() {
               <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
               <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
               <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+
             </>
           )}
         </Stack.Navigator>

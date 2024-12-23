@@ -82,10 +82,10 @@ const styles = StyleSheet.create({
     },
     diagonalBackground: {
         position: "absolute",
-        top: -100,
-        left: 0,
+        top: -190,
+        left: -100,
         right: 0,
-        height: 360,
+        height: 460,
         zIndex: -1,
         transform: [{ skewY: "-10deg" }],
         overflow: "hidden",
